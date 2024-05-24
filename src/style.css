@@ -12,3 +12,11 @@ body {
   bottom: 0;
   width: 100%;
 }
+
+#search-form {
+  position: fixed;
+  z-index: 100;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+}
