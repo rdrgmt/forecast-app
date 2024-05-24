@@ -73,6 +73,7 @@ async function search(searchInput: string) {
     return;
 }
 
+// panMapToLocation: pan map to coordinates
 function panMapToLocation(lon: number, lat: number) {
     view.animate({
         center: [lon, lat],
@@ -81,7 +82,7 @@ function panMapToLocation(lon: number, lat: number) {
     });
 }
 
-// weather: fetch data from coordinates, then show weather information
+// weather: fetch weather from coodinates, then fill popup with information
 async function weather(query: any) {
     // pan map to location
     panMapToLocation(query[0].lon, query[0].lat);
@@ -110,6 +111,7 @@ async function weather(query: any) {
     return;
 }
 
+// buildWeatherPopup: show weather information in popup
 function buildWeatherPopup(desc: any, data: any) {
     consts.content.innerHTML = `
         <p align="center" class="line-separator">${desc[0].name}, ${desc[0].state}, ${desc[0].country}</p>
