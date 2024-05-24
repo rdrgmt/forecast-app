@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        //"moduleResolution": "node",
+        "baseUrl": "src",
+        "outDir": "dist",
+        "sourceMap": true,
+        "noImplicitAny": true
+    },
+    "include": ["src/**/*"],
+        // "target": "es5",
+        // "module": "commonjs",
+        // "outDir": "./dist",
+        // "rootDir": "./src",
+        // "strict": true,
+        // "esModuleInterop": true,
+        // "skipLibCheck": true,
+        // "forceConsistentCasingInFileNames": true
+}
