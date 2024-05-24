@@ -7,10 +7,38 @@
 <body>
     <div id="map"></div>
 
+
+    <input class="inp" type="text" list="searchdata">
+    <button class="search">Search</button>
+    <datalist id="searchdata"></datalist>
+    
+
     <form id="search-form">
         <label for="search-bar">Busca por Cidade: </label>
-        <input id="search-bar" type="text" placeholder="ex. São José dos Campos" required />
+        <input id="search-bar" type="text" list="search-data" placeholder="ex. São José dos Campos" required />
         <button id="search-button" type="submit">Consultar</button>
+        <datalist id="search-data"></datalist>
+        <script>
+            var searchHistory = (localStorage.searchHistory) ? JSON.parse(localStorage.searchHistory) : [];
+            
+            document.querySelector("#search-button").addEventListener("click", () => {
+                if (document.querySelector("#search-bar").value != "" && !searchHistory.includes(document.querySelector("#search-bar").value)) {
+                    searchHistory.push(document.querySelector("#search-bar").value);
+                    localStorage.searchHistory = JSON.stringify(searchHistory);
+                }  
+            });
+
+            document.querySelector("#search-bar").addEventListener("focus", () => {
+                var data = document.querySelector("datalist#search-data");
+                data.innerHTML = "";
+                searchHistory.forEach((search) => {
+                    data.innerHTML = "<option>" + data.innerHTML;
+                    data.querySelector("option").innerText = search;
+                });
+            });
+        </script>
+
+
     </form>
 
     <div id ="popup" class="ol-popup">
