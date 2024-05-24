@@ -3,6 +3,9 @@ import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
 import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';
+import { useGeographic } from 'ol/proj';
+
+useGeographic();
 
 const view = new View({
     //center: [0, 0],
@@ -19,3 +22,7 @@ const map = new Map({
     layers: [layer],
     view: view,
 });
+
+map.on('click', function (evt) {
+    console.log(evt.coordinate);
+}); 
