@@ -12,6 +12,7 @@ A toy-app to display current's city weather.
 * Add 3-day forecast to display result
 ### Improvements
 * Structure apps' files/folders
+* Beautify search bar/pop-up
 * Encode api key
 * Add unit tests
 
