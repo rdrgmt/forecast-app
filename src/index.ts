@@ -62,6 +62,15 @@ async function search(searchInput: string) {
     } else {
         // fetch data from api
         fetch(geocodingUrl).then(response => response.json()).then(success => {
+            // has data?
+            if (success.length === 0) {
+                consts.content.innerHTML = `<p align="center"> !!! Cidade Não Encontrada !!!</p>
+                `;
+                overlay.setPosition([ -53.1805017,-14.2400732 ]);
+                panToCenter();
+                return;
+            }
+           
             // store content in cache
             consts.searchCache.add(geocodingUrl);
 
@@ -71,6 +80,15 @@ async function search(searchInput: string) {
     }
 
     return;
+}
+
+// panToCenter: pan map to center
+function panToCenter() {
+    view.animate({
+        center: [ -53.1805017,-14.2400732 ],
+        zoom: 5,
+        duration: 2000,
+    });
 }
 
 // panMapToLocation: pan map to coordinates
