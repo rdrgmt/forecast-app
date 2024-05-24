@@ -11,10 +11,9 @@ A toy-app to display current's city weather.
 * Add moon phase to display result
 * Add 3-day forecast to display result
 ### Improvements
-* Structure apps' files/folders to increase coupling/cohesion
+* Structure apps' files/folders
 * Encode api key
-* Add error pop-up for invalid search
-* Add unit tests to avoid bugs
+* Add unit tests
 
 ## Usage
 Clone this repository
