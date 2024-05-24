@@ -84,7 +84,7 @@ function weather(success: any) {
 
         // set the popup content
         content.innerHTML = `
-                            <p class="line-separator">${data.name}</p>  
+                            <p align="center" class="line-separator">${success[0].name}, ${success[0].state}, ${success[0].country}</p>  
                             <p align="center"><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png"></p>
                             <p align="center">(${data.weather[0].description})</p>                      
                             <p>Máxima: ${data.main.temp_max} °C</p>
