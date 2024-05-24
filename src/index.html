@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Forecast App</title>
+    <title>Weather App</title>
 </head>
 <body>
     <div id="map"></div>
@@ -19,26 +19,33 @@
         <button id="search-button" type="submit">Consultar</button>
         <datalist id="search-data"></datalist>
         <script>
-            var searchHistory = (localStorage.searchHistory) ? JSON.parse(localStorage.searchHistory) : [];
-            
-            document.querySelector("#search-button").addEventListener("click", () => {
-                if (document.querySelector("#search-bar").value != "" && !searchHistory.includes(document.querySelector("#search-bar").value)) {
-                    searchHistory.push(document.querySelector("#search-bar").value);
-                    localStorage.searchHistory = JSON.stringify(searchHistory);
-                }  
-            });
+            var dataList = document.getElementById('search-data');
+            var input = document.getElementById('search-bar');
+            var request = new XMLHttpRequest();
 
-            document.querySelector("#search-bar").addEventListener("focus", () => {
-                var data = document.querySelector("datalist#search-data");
-                data.innerHTML = "";
-                searchHistory.forEach((search) => {
-                    data.innerHTML = "<option>" + data.innerHTML;
-                    data.querySelector("option").innerText = search;
-                });
-            });
+            request.onreadystatechange = function(response) {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
+                        var jsonOptions = JSON.parse(request.responseText);
+
+                         jsonOptions.forEach(function(item) {
+                            var option = document.createElement('option');
+                            option.value = item.nome;
+                            dataList.appendChild(option);
+                        });
+
+                        input.placeholder = "ex. São José dos Campos";
+                    } else {
+                        input.placeholder = "Falha ao carregar dados";
+                    }
+                }
+            };
+
+            input.placeholder = "Carregando opções...";
+
+            request.open('GET', 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios');
+            request.send();
         </script>
-
-
     </form>
 
     <div id ="popup" class="ol-popup">
