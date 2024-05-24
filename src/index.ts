@@ -5,19 +5,9 @@ import TileLayer from 'ol/layer/Tile.js';
 import { Overlay } from 'ol';
 import View from 'ol/View.js';
 import { useGeographic } from 'ol/proj';
+import * as consts from './utils/constants';
 
 useGeographic();
-
-const searchCache = await caches.open('search-cache');
-const weatherCache = await caches.open('weather-cache');
-
-const searchButton = document.getElementById('search-button');
-const searchInput = document.getElementById('search-bar') as HTMLInputElement;
-
-const container = document.getElementById('popup');
-const content = document.getElementById('popup-content');
-
-const apiKey = "933151a3a6b3745dcd99ff7f8df5c640"
 
 const view = new View({
     //center: [0, 0],
@@ -30,7 +20,7 @@ const layer = new TileLayer({
 });
 
 const overlay = new Overlay({
-    element: container,
+    element: consts.container,
     autoPan: {
       animation: {
         duration: 250,
@@ -52,18 +42,18 @@ map.on('click', function (evt) {
 
 
 // handle button click event
-searchButton.addEventListener('click', (event) => {
-    search(searchInput.value);
+consts.searchButton.addEventListener('click', (event) => {
+    search(consts.searchInput.value);
     event.preventDefault();
 });
 
 // search: fetch data from search form, then consult coordinates from API
 async function search(searchInput: string) {
     // build url
-    const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${searchInput}&limit=1&appid=${apiKey}`
+    const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${searchInput}&limit=1&appid=${consts.apiKey}`
 
     // has cached data?
-    const response = await searchCache.match(geocodingUrl);
+    const response = await consts.searchCache.match(geocodingUrl);
     if (response) {
         response.json().then(success => {
             // call weather function
@@ -73,7 +63,7 @@ async function search(searchInput: string) {
         // fetch data from api
         fetch(geocodingUrl).then(response => response.json()).then(success => {
             // store content in cache
-            searchCache.add(geocodingUrl);
+            consts.searchCache.add(geocodingUrl);
 
             // call weather function
             weather(success);
@@ -97,10 +87,10 @@ async function weather(query: any) {
     panMapToLocation(query[0].lon, query[0].lat);
 
     // build url
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${query[0].lat}&lon=${query[0].lon}&appid=${apiKey}&units=metric&lang=pt_br`
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${query[0].lat}&lon=${query[0].lon}&appid=${consts.apiKey}&units=metric&lang=pt_br`
 
     // has cached data?
-    const response = await weatherCache.match(weatherUrl);
+    const response = await consts.weatherCache.match(weatherUrl);
     if (response) {
         response.json().then(success => {
             // call popup function
@@ -110,7 +100,7 @@ async function weather(query: any) {
         // fetch data
         fetch(weatherUrl).then(response => response.json()).then(success => {
             // store content in cache
-            weatherCache.add(weatherUrl);
+            consts.weatherCache.add(weatherUrl);
 
             // call popup function
             buildWeatherPopup(query, success);
@@ -121,7 +111,7 @@ async function weather(query: any) {
 }
 
 function buildWeatherPopup(desc: any, data: any) {
-    content.innerHTML = `
+    consts.content.innerHTML = `
         <p align="center" class="line-separator">${desc[0].name}, ${desc[0].state}, ${desc[0].country}</p>
         <p align="center"><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png"></p>
         <p align="center">(${data.weather[0].description})</p>                      
