@@ -23,6 +23,8 @@ const map = new Map({
     view: view,
 });
 
+
+// click event to check coordinates
 map.on('click', function (evt) {
     console.log(evt.coordinate);
 });
@@ -32,12 +34,30 @@ map.on('click', function (evt) {
 const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-bar') as HTMLInputElement;
 
+const apiKey = "933151a3a6b3745dcd99ff7f8df5c640"
+
 // handle button click event
 searchButton.addEventListener('click', (event) => {
     search(searchInput.value);
     event.preventDefault();
 });
 
+
+// search: fetch data from search form, then consult coordinates from API
 function search(searchInput: string) {
-    console.log('searching for:', searchInput);
+    // fetch data from API
+    const cityName = searchInput;
+    const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`
+
+    fetch(geocodingUrl).then(response => response.json()).then(success => weather(success));
+}
+
+// weather: receive data from search, then generate weather report
+function weather(data: any) {
+    // pan map to location
+    view.animate({
+        center: [data[0].lon, data[0].lat],
+        zoom: 8,
+        duration: 2000,
+      });
 }
