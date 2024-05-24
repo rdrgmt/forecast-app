@@ -5,8 +5,9 @@ import TileLayer from 'ol/layer/Tile.js';
 import View from 'ol/View.js';
 
 const view = new View({
-    center: [0, 0],
-    zoom: 2,
+    //center: [0, 0],
+    center: [ -53.1805017,-14.2400732 ],
+    zoom: 5,
 });
 
 const layer = new TileLayer({
